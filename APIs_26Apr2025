@@ -1,0 +1,3296 @@
+
+
+
+
+
+
+
+
+
+
+mongo
+use mytravel
+db.users.find({ userId: "customer_abcd01" }).pretty()
+
+
+peer chaincode query \
+  -C mychannel \
+  -n travel \
+  -c '{"function":"GetCustomer","Args":["customer_abcd01"]}'
+
+
+################################################################################################################################################
+								TESTING-2
+								
+$$$ Creation of Admin tokens  $$$$							
+[nodemon] restarting due to changes...
+[nodemon] starting `node server.js`
+✅ JWT_SECRET in auth middleware: 3kfjv9832hf!@9sdklf2lfjWQElKZ
+✅ paymentRoutes loaded successfully
+Server running on port 4000
+MongoDB Connected: localhost
+^C^C
+divya@divya-Inspiron:~/mytravel/travel/backend$ cd /home/divya/mytravel/travel/backend/
+node generateAdminToken.js
+🔑 Admin Token:
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1haW5fYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiQWRtaW4gVXNlciIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1OTYzNzAsImV4cCI6MTc0NTY4Mjc3MH0.vdGttCvUDEJxYP0eLjUtDFVHgQNcFZuEv8iZTvpHmRU
+
+divya@divya-Inspiron:~/mytravel/travel/backend$ 
+
+db.users.insertOne({
+  userId: "main_admin",
+  email: "admin@example.com",
+  password: "admin@123",  // dummy password
+  role: "admin",
+  isActive: true,
+  createdAt: new Date(),
+  updatedAt: new Date()
+})
+
+1. Rgister Provider
+POST   http://localhost:4000/api/auth/register/provider
+
+{
+  "name": "Test ProviderNew",
+  "email": "providernew@example.com",
+  "phone": "9876543210",
+  "password": "mytestnew",
+  "transportMode": "air",
+  "businessName": "JetFlyNew Pvt Ltd",
+  "serviceType": "Flight"
+}
+
+{
+    "message": "Provider registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzRlZWIzZCIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJUZXN0IFByb3ZpZGVyTmV3IiwiZW1haWwiOiJwcm92aWRlcm5ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc0NTQ4ODE3OSwiZXhwIjoxNzQ4MDgwMTc5fQ.GX6yukKO4IhDUuzMD--2ODhv9sxVxIJBRur099cI-VI",
+    "user": {
+        "id": "provider_4eeb3d",
+        "name": "Test ProviderNew",
+        "email": "providernew@example.com",
+        "phone": "9876543210",
+        "transportMode": "air",
+        "role": "provider"
+    }
+}
+
+
+Login
+
+POST http://localhost:4000/api/auth/login
+
+{
+  "id": "provider_4eeb3d",
+  "password": "mytestnew"
+}
+
+{
+    "success": true,
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzRlZWIzZCIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJUZXN0IFByb3ZpZGVyTmV3IiwiZW1haWwiOiJwcm92aWRlcm5ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc0NTQ4ODMzMiwiZXhwIjoxNzQ4MDgwMzMyfQ.8NthrLjgOrKmbkPoKcUJ7weSkhV9_jy5UW2arHBmcoM",
+    "user": {
+        "id": "provider_4eeb3d",
+        "name": "Test ProviderNew",
+        "email": "providernew@example.com",
+        "phone": "9876543210",
+        "transportMode": "air",
+        "rating": 0,
+        "totalRatings": 0,
+        "registeredDate": "2025-04-24T09:49:37Z",
+        "isActive": true,
+        "transportList": [],
+        "role": "provider"
+    }
+}
+
+
+
+
+Provider 2
+
+{
+  "name": "Vijay Airlines",
+  "email": "vijay@example.com",
+  "phone": "9604558218",
+  "password": "Vijay@123",
+  "transportMode": "air",
+  "businessName": "Vijay Pvt Ltd",
+  "serviceType": "Flight"
+}
+{
+    "message": "Provider registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzhlYTFlMSIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJWaWpheSBBaXJsaW5lcyIsImVtYWlsIjoidmlqYXlAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1ODEwODgsImV4cCI6MTc0ODE3MzA4OH0.ztbfi8Jia3Dajk5pUalJJ07t0ysJxjjQoSbptT9lYTc",
+    "user": {
+        "id": "provider_8ea1e1",
+        "name": "Vijay Airlines",
+        "email": "vijay@example.com",
+        "phone": "9604558218",
+        "transportMode": "air",
+        "role": "provider"
+    }
+}
+
+Login:
+{
+  "id":"provider_8ea1e1",
+  "password": "Vijay@123"
+}
+{
+    "success": true,
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzhlYTFlMSIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJWaWpheSBBaXJsaW5lcyIsImVtYWlsIjoidmlqYXlAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1ODEyMDMsImV4cCI6MTc0ODE3MzIwM30.YEpkvwQmnOlPvtMVeUq2SpUtehfiPYjc-uKSsauXTSw",
+    "user": {
+        "id": "provider_8ea1e1",
+        "name": "Vijay Airlines",
+        "email": "vijay@example.com",
+        "phone": "9604558218",
+        "transportMode": "air",
+        "rating": 0,
+        "totalRatings": 0,
+        "registeredDate": "2025-04-25T11:38:06Z",
+        "isActive": true,
+        "transportList": [],
+        "role": "provider"
+    }
+}
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzhlYTFlMSIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJWaWpheSBBaXJsaW5lcyIsImVtYWlsIjoidmlqYXlAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1ODMzNTUsImV4cCI6MTc0ODE3NTM1NX0.9eIn0K0s7g1F044DqMagXVQhkTouM4qzkSp_gic9qW0
+
+############################################################################
+
+
+Deregister Provider
+
+Authorization tab → Type: Bearer Token
+
+Token → Paste the output we got(for Admin).
+
+PUT http://localhost:4000/api/providers/{providerId}/deregister
+ 
+ Response
+ 
+ {
+    "success": true,
+    "message": "Provider provider_c97ac9 deregistered successfully",
+    "provider": {
+        "businessAddress": {
+            "street": "",
+            "city": "",
+            "state": "",
+            "country": "",
+            "zipCode": ""
+        },
+        "ratings": {
+            "average": 0,
+            "count": 0
+        },
+        "_id": "680bad3bcb0c0d39dae36de6",
+        "businessName": "Shweta Taxi Services",
+        "serviceType": "Taxi",
+        "transportMode": "land",
+        "businessDescription": "",
+        "verificationStatus": "pending",
+        "userId": "provider_c97ac9",
+        "email": "shweta@example.com",
+        "password": "shweta@123",
+        "phone": "9870093210",
+        "isActive": false,
+        "role": "provider",
+        "services": [],
+        "bookings": [],
+        "createdAt": "2025-04-25T15:41:47.397Z",
+        "updatedAt": "2025-04-25T16:07:29.643Z",
+        "__v": 0
+    }
+}
+#########################################################
+ 
+ 
+{
+    "message": "Provider registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyXzg5MzJkZSIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJBcnVkcmEgVHJhdmVscyIsImVtYWlsIjoiYXJ1ZHJhQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NTk1NTkyLCJleHAiOjE3NDgxODc1OTJ9.LX6QwhAb2QyJ52ljrQ7SjRjmwx_yjunhuZzAzfxCvoQ",
+    "user": {
+        "id": "provider_8932de",
+        "name": "Arudra Travels",
+        "email": "arudra@example.com",
+        "phone": "9870043210",
+        "transportMode": "land",
+        "role": "provider"
+    }
+}
+
+{
+    "message": "Provider registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InByb3ZpZGVyX2M5N2FjOSIsInJvbGUiOiJwcm92aWRlciIsIm5hbWUiOiJTaHdldGEgTHV0aHJhIiwiZW1haWwiOiJzaHdldGFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1OTU3MDcsImV4cCI6MTc0ODE4NzcwN30.KpXsbLP8_jqJjd7Ad3-vI36RNteW7DMJP1DCTKjqFbw",
+    "user": {
+        "id": "provider_c97ac9",
+        "name": "Shweta Luthra",
+        "email": "shweta@example.com",
+        "phone": "9870093210",
+        "transportMode": "land",
+        "role": "provider"
+    }
+}
+
+
+
+##########################################################################
+2. Register Customer
+
+POST    http://localhost:4000/api/auth/register/customer
+
+{
+  "name": "Sonu Nigam",
+  "email": "sonunigam@example.com",
+  "phone": "9806543210",
+  "password": "sonu@123",
+  "visibility": "public"
+}
+
+
+{
+    "message": "Customer registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2NkYTNmNyIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJTb251IE5pZ2FtIiwiZW1haWwiOiJzb251bmlnYW1AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU0ODg0NjQsImV4cCI6MTc0ODA4MDQ2NH0.0vx5-5zWTk0HZ-gShlKU_HkZUZzR0LvoQiJ_woaY018",
+    "user": {
+        "id": "customer_cda3f7",
+        "name": "Sonu Nigam",
+        "email": "sonunigam@example.com",
+        "phone": "9806543210",
+        "visibility": "public",
+        "role": "customer"
+    }
+}
+
+
+Login
+
+
+{
+ "id": "customer_cda3f7",
+  "password": "sonu@123"
+}
+
+{
+    "success": true,
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2NkYTNmNyIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJTb251IE5pZ2FtIiwiZW1haWwiOiJzb251bmlnYW1AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU0ODg2NDgsImV4cCI6MTc0ODA4MDY0OH0.rfce-hDdtHUovicaBVDoAwl4n6PsCzhIgFdtk_SuqQI",
+    "user": {
+        "id": "customer_cda3f7",
+        "name": "Sonu Nigam",
+        "email": "sonunigam@example.com",
+        "phone": "9806543210",
+        "visibility": "public",
+        "registeredDate": "2025-04-24T09:54:22Z",
+        "isActive": true,
+        "bookingHistory": [],
+        "role": "customer"
+    }
+}
+
+
+
+Customers:
+{
+  "name": "Deletion Singh",
+  "email": "deletion@example.com",
+  "phone": "9806549999",
+  "password": "deletion@123",
+  "visibility": "public"
+}
+{
+    "message": "Customer registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2E0YjMwNCIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJEZWxldGlvbiBTaW5naCIsImVtYWlsIjoiZGVsZXRpb25AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU2NjUyNTAsImV4cCI6MTc0ODI1NzI1MH0.LYv-oUcfv5URmNX5rtaqR_oopjmPFIcalVUScEaRhzw",
+    "user": {
+        "id": "customer_a4b304",
+        "name": "Deletion Singh",
+        "email": "deletion@example.com",
+        "phone": "9806549999",
+        "visibility": "public",
+        "role": "customer"
+    }
+}
+
+{
+  "name": "Boop Singh",
+  "email": "boop@example.com",
+  "phone": "9800549999",
+  "password": "bhoop@123",
+  "visibility": "public"
+}
+{
+    "message": "Customer registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyXzg2MjBiMCIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb29wIFNpbmdoIiwiZW1haWwiOiJib29wQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NjY1MzE1LCJleHAiOjE3NDgyNTczMTV9.sTapQqfB28G0monOs6EbqGaNKsGC8gAa3MbxOqPBOnQ",
+    "user": {
+        "id": "customer_8620b0",
+        "name": "Boop Singh",
+        "email": "boop@example.com",
+        "phone": "9800549999",
+        "visibility": "public",
+        "role": "customer"
+    }
+}
+{
+  "name": "Faltu Ram",
+  "email": "faltu@example.com",
+  "phone": "9800567999",
+  "password": "faltu@123",
+  "visibility": "public"
+}
+{
+    "message": "Customer registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2EzOWFkMCIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJGYWx0dSBSYW0iLCJlbWFpbCI6ImZhbHR1QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NjY1MzY1LCJleHAiOjE3NDgyNTczNjV9.RlYQ8y3DFAXUCevG18RrFPuEWIfHXDD_pmZYXDB_gSY",
+    "user": {
+        "id": "customer_a39ad0",
+        "name": "Faltu Ram",
+        "email": "faltu@example.com",
+        "phone": "9800567999",
+        "visibility": "public",
+        "role": "customer"
+    }
+}
+
+###############################################################
+Deactivate Customer
+
+PUT http://localhost:4000/api/customers/deactivate
+
+Header 		: Bearer <cutomer_JWT_token>
+Content-type	: application/json
+
+Body: Nul
+
+Response:
+{
+    "message": "Account deactivated successfully"
+}
+
+Can be chcked on Blockchain with CLI command:
+
+peer chaincode query   -C mychannel   -n travel   -c '{"function":"GetCustomer","Args":["customer_a39ad0"]}'
+
+
+
+########################################################################################################
+
+3. Create Ticket
+
+POST http://localhost:4000/api/tickets
+
+{
+  "origin": "Delhi",
+  "destination": "Mumbai",
+  "departureTime": "2025-05-15T08:00:00Z",
+  "arrivalTime": "2025-05-15T10:30:00Z",
+  "price": 3000,
+  "availableSeats": 100,
+  "totalSeats": 100,
+  "status": "Available",
+  "serviceProvider": "provider_4eeb3d",
+  "transportMode": "air"
+}
+
+{
+    "message": "✅ Ticket created successfully.",
+    "ticketId": "TICKET_AA7K5G"
+}
+
+################################################################################################################################
+
+4. Book Ticket
+
+POST http://localhost:4000/api/bookings
+
+{
+  "customerId": "customer_cda3f7",
+  "ticketId": "TICKET_AA7K5G",
+  "seatNumbers": ["1", "2"]
+}
+
+{
+    "message": "Ticket booked successfully",
+    "bookingId": "booking_6ZLRHG",
+    "booking": {
+        "id": "booking_6ZLRHG",
+        "ticketId": "TICKET_AA7K5G",
+        "userId": "customer_cda3f7",
+        "seatIds": [
+            "TICKET_AA7K5G-seat-1",
+            "TICKET_AA7K5G-seat-2"
+        ],
+        "numberOfSeats": 2,
+        "totalPrice": 6000,
+        "status": "Pending",
+        "isPaymentConfirmed": false,
+        "paymentBlockHeight": null,
+        "createdAt": "2025-04-24T10:06:13Z",
+        "updatedAt": "2025-04-24T10:06:13Z"
+    },
+    "paymentRequired": true
+}
+
+###################################################################
+
+5. Wallet Initialisation
+
+POST http://localhost:4000/api/payments/wallet/init
+
+
+{
+  "message": "Wallet initialized successfully",
+  "balance": 1000
+}
+
+
+{
+    "message": "Wallet initialized successfully",
+    "balance": 1000
+}
+
+
+################################################################
+
+6. Add funds to the wallet
+
+POST http://localhost:4000/api/payments/wallet/add-funds
+
+{
+  "amount": 7000
+}
+
+
+{
+    "message": "Funds added successfully",
+    "balance": 8000,
+    "transaction": {
+        "id": "627b9de4-9420-4a2b-9abe-ee18781e4da2",
+        "type": "DEPOSIT",
+        "amount": 7000,
+        "timestamp": "2025-04-24T15:53:29.413Z",
+        "description": "Added funds to wallet"
+    }
+}
+
+
+#################################################################################
+
+7. Wallet Balance Check
+
+GET http://localhost:4000/api/payments/wallet/balance
+
+Body- Null
+
+
+Response
+
+{
+    "balance": 8000,
+    "transactions": [
+        {
+            "id": "627b9de4-9420-4a2b-9abe-ee18781e4da2",
+            "type": "DEPOSIT",
+            "amount": 7000,
+            "timestamp": "2025-04-24T15:53:29.413Z",
+            "description": "Added funds to wallet"
+        }
+    ]
+}
+
+
+################################################################################################################
+
+8. Process Payment
+
+POST  http://localhost:4000/api/payments/wallet/pay
+
+{
+  "bookingId": "booking_6ZLRHG",
+  "amount": 6000
+}
+
+{
+    "message": "Payment processed successfully",
+    "balance": 2000,
+    "transaction": {
+        "id": "tx_f35adb24-c760-42c2-baeb-79a05c67d088",
+        "type": "PAYMENT",
+        "amount": -6000,
+        "timestamp": "2025-04-24T17:22:22.745Z",
+        "description": "Payment for booking booking_6ZLRHG",
+        "bookingId": "booking_6ZLRHG"
+    },
+    "transactionId": "tx_f35adb24-c760-42c2-baeb-79a05c67d088"
+}
+
+@@@@@@@@@@@Copy transactionId to be used for Confirm Payment on blockchain@@@@@@@@@
+
+peer chaincode invoke \
+  --orderer localhost:7050 \
+  --tls \
+  --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+  --channelID mychannel \
+  --name travel \
+  --peerAddresses localhost:7051 \
+  --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
+  -c '{"function":"ConfirmPayment","Args":["booking_6ZLRHG", "tx_f35adb24-c760-42c2-baeb-79a05c67d088"]}'
+
+
+#########################################################################################################################################
+
+9. Refund
+
+POST http://localhost:4000/api/payments/wallet/refund
+
+{
+  "bookingId": "booking_6ZLRHG",
+  "amount": 3000
+}
+
+{
+    "message": "Refund processed successfully",
+    "balance": 5000,
+    "transaction": {
+        "id": "438da1e7-b1c9-430c-9d6d-3b7c1dff60f3",
+        "type": "REFUND",
+        "amount": 3000,
+        "timestamp": "2025-04-24T17:26:49.404Z",
+        "description": "Refund for booking booking_6ZLRHG",
+        "bookingId": "booking_6ZLRHG"
+    }
+}
+
+######################################################################################################################################
+
+10. Confirm Payment
+
+POST http://localhost:4000/api/bookings/confirm-payment
+
+
+
+#Ticket-2 booked for the same customer
+POST  http://localhost:4000/api/bookings
+
+
+{
+  "customerId": "customer_cda3f7",
+  "ticketId": "TICKET_AA7K5G",
+  "seatNumbers": ["3", "4"]
+}
+
+{
+    "message": "Ticket booked successfully",
+    "bookingId": "booking_9BO6ZC",
+    "booking": {
+        "id": "booking_9BO6ZC",
+        "ticketId": "TICKET_AA7K5G",
+        "userId": "customer_cda3f7",
+        "seatIds": [
+            "TICKET_AA7K5G-seat-3",
+            "TICKET_AA7K5G-seat-4"
+        ],
+        "numberOfSeats": 2,
+        "totalPrice": 6000,
+        "status": "Pending",
+        "isPaymentConfirmed": false,
+        "paymentBlockHeight": null,
+        "createdAt": "2025-04-25T02:36:36Z",
+        "updatedAt": "2025-04-25T02:36:36Z"
+    },
+    "paymentRequired": true
+}
+######################################################################
+
+#adding amount to his wallet
+POST http://localhost:4000/api/payments/wallet/add-funds
+
+{
+  "amount": 100000
+}
+
+{
+    "message": "Funds added successfully",
+    "balance": 105000,
+    "transaction": {
+        "id": "6306be28-2d31-41dd-8f2b-c2c8dafc9a4e",
+        "type": "DEPOSIT",
+        "amount": 100000,
+        "timestamp": "2025-04-25T02:39:47.007Z",
+        "description": "Added funds to wallet"
+    }
+}
+
+###########################################################################
+{
+    "balance": 110000,
+    "transactions": [
+        {
+            "id": "627b9de4-9420-4a2b-9abe-ee18781e4da2",
+            "type": "DEPOSIT",
+            "amount": 7000,
+            "timestamp": "2025-04-24T15:53:29.413Z",
+            "description": "Added funds to wallet"
+        },
+        {
+            "id": "tx_f35adb24-c760-42c2-baeb-79a05c67d088",
+            "type": "PAYMENT",
+            "amount": -6000,
+            "timestamp": "2025-04-24T17:22:22.745Z",
+            "description": "Payment for booking booking_6ZLRHG",
+            "bookingId": "booking_6ZLRHG"
+        },
+        {
+            "id": "438da1e7-b1c9-430c-9d6d-3b7c1dff60f3",
+            "type": "REFUND",
+            "amount": 3000,
+            "timestamp": "2025-04-24T17:26:49.404Z",
+            "description": "Refund for booking booking_6ZLRHG",
+            "bookingId": "booking_6ZLRHG"
+        },
+        {
+            "id": "6306be28-2d31-41dd-8f2b-c2c8dafc9a4e",
+            "type": "DEPOSIT",
+            "amount": 100000,
+            "timestamp": "2025-04-25T02:39:47.007Z",
+            "description": "Added funds to wallet"
+        },
+        {
+            "id": "1a2a2e93-84c3-4472-9d4a-7064e2a6726b",
+            "type": "DEPOSIT",
+            "amount": 5000,
+            "timestamp": "2025-04-25T02:50:58.582Z",
+            "description": "Added funds to wallet"
+        }
+    ]
+}
+
+
+#########################################################################################
+
+11. Process Payment
+
+POST http://localhost:4000/api/payments/wallet/pay
+
+{
+  "bookingId": "booking_6ZLRHG",
+  "amount": 6000
+}
+
+{
+    "message": "Payment processed successfully",
+    "balance": 104000,
+    "transaction": {
+        "id": "tx_9821b1f7-4eea-43f6-aed5-1353da88169e",
+        "type": "PAYMENT",
+        "amount": -6000,
+        "timestamp": "2025-04-25T03:32:19.698Z",
+        "description": "Payment for booking booking_6ZLRHG",
+        "bookingId": "booking_6ZLRHG"
+    },
+    "transactionId": "tx_9821b1f7-4eea-43f6-aed5-1353da88169e"
+}
+
+############################################################################
+12. Refund:
+
+POST http://localhost:4000/api/payments/wallet/refund
+
+{
+  "bookingId": "booking_6ZLRHG",
+  "amount": 3000
+}
+
+{
+    "message": "Refund processed successfully",
+    "balance": 107000,
+    "transaction": {
+        "id": "bebce67c-dca2-4473-b8ea-a4b73ce5d5fe",
+        "type": "REFUND",
+        "amount": 3000,
+        "timestamp": "2025-04-25T03:35:10.261Z",
+        "description": "Refund for booking booking_6ZLRHG",
+        "bookingId": "booking_6ZLRHG"
+    }
+}
+
+############################################################################################
+
+13. GetBookingByID
+
+GET http://localhost:4000/api/bookings/booking_6ZLRHG
+
+
+
+###first we need to login with the customer id
+{
+  "id":"customer_cda3f7",
+  "password": "sonu@123"
+}
+
+{
+    "success": true,
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2NkYTNmNyIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJTb251IE5pZ2FtIiwiZW1haWwiOiJzb251bmlnYW1AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1NTM0NTMsImV4cCI6MTc0ODE0NTQ1M30.xjx-i1xyAQgTrxyAyj8rYWLDGoGsgqSmUDPAU6p6044",
+    "user": {
+        "id": "customer_cda3f7",
+        "name": "Sonu Nigam",
+        "email": "sonunigam@example.com",
+        "phone": "9806543210",
+        "visibility": "public",
+        "registeredDate": "2025-04-24T09:54:22Z",
+        "isActive": true,
+        "bookingHistory": [
+            "booking_6ZLRHG",
+            "booking_9BO6ZC"
+        ],
+        "role": "customer"
+    }
+}
+
+################################################################################################
+
+14. Cancel Booking
+
+@@@@@@@@@@ PRE REQUISITE @@@@@@@@@@@@@
+
+ondition	Value
+Auth token	Must belong to booking owner (req.user.id === booking.userId)
+Booking status	Should not already be cancelled
+Fabric node	Chaincode must support CancelBooking and be running
+Route		Use PUT, not POST or GET
+
+
+
+PUT http://localhost:4000/api/bookings/booking_9BO6ZC/cancel
+
+Key		Value
+Authorization	Bearer <JWT for customer_cda3f7>
+Content-Type	application/json
+
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyX2NkYTNmNyIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJTb251IE5pZ2FtIiwiZW1haWwiOiJzb251bmlnYW1AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1NTU4NTYsImV4cCI6MTc0ODE0Nzg1Nn0.oPSqYzkZZ9rM6yY3wL5qwBg5k6FvbZ30MekAkPfeYZU
+🔹 Body:
+No body required for this route.
+
+
+Response
+
+{
+    "message": "Booking cancelled successfully",
+    "refundAmount": 4800,
+    "booking": {
+        "id": "booking_9BO6ZC",
+        "ticketId": "TICKET_AA7K5G",
+        "userId": "customer_cda3f7",
+        "seatIds": [
+            "TICKET_AA7K5G-seat-3",
+            "TICKET_AA7K5G-seat-4"
+        ],
+        "numberOfSeats": 2,
+        "totalPrice": 6000,
+        "status": "Pending",
+        "isPaymentConfirmed": false,
+        "paymentBlockHeight": "",
+        "createdAt": "2025-04-25T02:36:36Z",
+        "updatedAt": "2025-04-25T02:36:36Z"
+    }
+}
+
+PUT http://localhost:4000/api/bookings/booking_9BO6ZC/cancel
+
+{
+    "message": "Booking cancelled successfully",
+    "refundAmount": 4800,
+    "booking": {
+        "id": "booking_9BO6ZC",
+        "ticketId": "TICKET_AA7K5G",
+        "userId": "customer_cda3f7",
+        "seatIds": [
+            "TICKET_AA7K5G-seat-3",
+            "TICKET_AA7K5G-seat-4"
+        ],
+        "numberOfSeats": 2,
+        "totalPrice": 6000,
+        "status": "Pending",
+        "isPaymentConfirmed": false,
+        "paymentBlockHeight": "",
+        "createdAt": "2025-04-25T02:36:36Z",
+        "updatedAt": "2025-04-25T02:36:36Z"
+    }
+}
+
+
+#################################################################################################
+
+15. Query Ticket by Destination
+
+GET http://localhost:4000/api/tickets?source=Delhi&destination=Mumbai&date=2025-04-30
+
+Response
+
+[
+    {
+        "_id": "6809a40a3d9a5ff4542eeb74",
+        "id": "TICKET_HVF7HN",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_ed2eec",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T02:38:02.139Z",
+        "updatedAt": "2025-04-24T02:38:02.139Z",
+        "__v": 0
+    },
+    {
+        "_id": "6809cfe6f79eabb702db323a",
+        "id": "TICKET_ZPVOJG",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_97ca57",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T05:45:10.044Z",
+        "updatedAt": "2025-04-24T05:45:10.044Z",
+        "__v": 0
+    }
+]
+
+#######################
+ 16. Query Ticket by mode of transport
+
+
+GET http://localhost:4000/api/tickets?transportMode=air
+
+Response
+
+[
+    {
+        "_id": "6808ded5a8c6a416201b085b",
+        "id": "TICKET_XXSD38",
+        "origin": "Delhi",
+        "destination": "Kerala",
+        "departureTime": "2025-06-25T08:00:00Z",
+        "arrivalTime": "2025-06-25T10:00:00Z",
+        "price": 7500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_1a1859",
+        "transportMode": "air",
+        "createdAt": "2025-04-23T12:36:37.876Z",
+        "updatedAt": "2025-04-23T12:36:37.876Z",
+        "__v": 0
+    },
+    {
+        "_id": "6809a40a3d9a5ff4542eeb74",
+        "id": "TICKET_HVF7HN",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_ed2eec",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T02:38:02.139Z",
+        "updatedAt": "2025-04-24T02:38:02.139Z",
+        "__v": 0
+    },
+    {
+        "_id": "6809cfe6f79eabb702db323a",
+        "id": "TICKET_ZPVOJG",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_97ca57",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T05:45:10.044Z",
+        "updatedAt": "2025-04-24T05:45:10.044Z",
+        "__v": 0
+    },
+    {
+        "_id": "680a0be2bea5ba9149c4f892",
+        "id": "TICKET_AA7K5G",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T10:01:06.188Z",
+        "updatedAt": "2025-04-24T10:01:06.188Z",
+        "__v": 0
+    },
+    {
+        "_id": "680afefca083d3f55dc1dbe5",
+        "id": "TICKET_LAWNM9",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-25T03:18:20.535Z",
+        "updatedAt": "2025-04-25T03:18:20.535Z",
+        "__v": 0
+    }
+]
+
+
+######################################
+17.Get All Tickets
+
+GET  http://localhost:4000/api/tickets
+Body: Null
+
+
+Response
+
+[
+    {
+        "_id": "6808ded5a8c6a416201b085b",
+        "id": "TICKET_XXSD38",
+        "origin": "Delhi",
+        "destination": "Kerala",
+        "departureTime": "2025-06-25T08:00:00Z",
+        "arrivalTime": "2025-06-25T10:00:00Z",
+        "price": 7500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_1a1859",
+        "transportMode": "air",
+        "createdAt": "2025-04-23T12:36:37.876Z",
+        "updatedAt": "2025-04-23T12:36:37.876Z",
+        "__v": 0,
+        "dynamicPrice": 7500
+    },
+    {
+        "_id": "6809a40a3d9a5ff4542eeb74",
+        "id": "TICKET_HVF7HN",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_ed2eec",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T02:38:02.139Z",
+        "updatedAt": "2025-04-24T02:38:02.139Z",
+        "__v": 0,
+        "dynamicPrice": 4500
+    },
+    {
+        "_id": "6809cfe6f79eabb702db323a",
+        "id": "TICKET_ZPVOJG",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_97ca57",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T05:45:10.044Z",
+        "updatedAt": "2025-04-24T05:45:10.044Z",
+        "__v": 0,
+        "dynamicPrice": 4500
+    },
+    {
+        "_id": "680a0be2bea5ba9149c4f892",
+        "id": "TICKET_AA7K5G",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T10:01:06.188Z",
+        "updatedAt": "2025-04-24T10:01:06.188Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    },
+    {
+        "_id": "680afefca083d3f55dc1dbe5",
+        "id": "TICKET_LAWNM9",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-25T03:18:20.535Z",
+        "updatedAt": "2025-04-25T03:18:20.535Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    }
+]
+
+
+#####################################################################
+18. Get Ticket by Dynamic Price
+
+GET http://localhost:4000/api/tickets
+
+Body: Null
+
+Response
+
+[
+    {
+        "_id": "6808ded5a8c6a416201b085b",
+        "id": "TICKET_XXSD38",
+        "origin": "Delhi",
+        "destination": "Kerala",
+        "departureTime": "2025-06-25T08:00:00Z",
+        "arrivalTime": "2025-06-25T10:00:00Z",
+        "price": 7500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_1a1859",
+        "transportMode": "air",
+        "createdAt": "2025-04-23T12:36:37.876Z",
+        "updatedAt": "2025-04-23T12:36:37.876Z",
+        "__v": 0,
+        "dynamicPrice": 7500
+    },
+    {
+        "_id": "6809a40a3d9a5ff4542eeb74",
+        "id": "TICKET_HVF7HN",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_ed2eec",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T02:38:02.139Z",
+        "updatedAt": "2025-04-24T02:38:02.139Z",
+        "__v": 0,
+        "dynamicPrice": 4500
+    },
+    {
+        "_id": "6809cfe6f79eabb702db323a",
+        "id": "TICKET_ZPVOJG",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-04-30T08:00:00Z",
+        "arrivalTime": "2025-04-30T10:30:00Z",
+        "price": 4500,
+        "availableSeats": 60,
+        "totalSeats": 60,
+        "status": "Available",
+        "serviceProvider": "provider_97ca57",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T05:45:10.044Z",
+        "updatedAt": "2025-04-24T05:45:10.044Z",
+        "__v": 0,
+        "dynamicPrice": 4500
+    },
+    {
+        "_id": "680a0be2bea5ba9149c4f892",
+        "id": "TICKET_AA7K5G",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T10:01:06.188Z",
+        "updatedAt": "2025-04-24T10:01:06.188Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    },
+    {
+        "_id": "680afefca083d3f55dc1dbe5",
+        "id": "TICKET_LAWNM9",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-25T03:18:20.535Z",
+        "updatedAt": "2025-04-25T03:18:20.535Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    }
+]
+#########################################################################################
+
+19. Get Ticket By ID
+
+GET http://localhost:4000/api/tickets/TICKET_AA7K5G
+
+Body:Null
+
+Response:
+{
+    "id": "TICKET_AA7K5G",
+    "origin": "Delhi",
+    "destination": "Mumbai",
+    "departureTime": "2025-05-15T08:00:00Z",
+    "arrivalTime": "2025-05-15T10:30:00Z",
+    "price": 3000,
+    "dynamicPrice": 3000,
+    "availableSeats": 98,
+    "totalSeats": 100,
+    "seats": [
+        {
+            "id": "TICKET_AA7K5G-seat-1",
+            "number": "1",
+            "status": "booked",
+            "bookedBy": "customer_cda3f7"
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-2",
+            "number": "2",
+            "status": "booked",
+            "bookedBy": "customer_cda3f7"
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-3",
+            "number": "3",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-4",
+            "number": "4",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-5",
+            "number": "5",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-6",
+            "number": "6",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-7",
+            "number": "7",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-8",
+            "number": "8",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-9",
+            "number": "9",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-10",
+            "number": "10",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-11",
+            "number": "11",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-12",
+            "number": "12",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-13",
+            "number": "13",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-14",
+            "number": "14",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-15",
+            "number": "15",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-16",
+            "number": "16",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-17",
+            "number": "17",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-18",
+            "number": "18",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-19",
+            "number": "19",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-20",
+            "number": "20",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-21",
+            "number": "21",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-22",
+            "number": "22",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-23",
+            "number": "23",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-24",
+            "number": "24",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-25",
+            "number": "25",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-26",
+            "number": "26",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-27",
+            "number": "27",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-28",
+            "number": "28",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-29",
+            "number": "29",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-30",
+            "number": "30",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-31",
+            "number": "31",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-32",
+            "number": "32",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-33",
+            "number": "33",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-34",
+            "number": "34",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-35",
+            "number": "35",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-36",
+            "number": "36",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-37",
+            "number": "37",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-38",
+            "number": "38",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-39",
+            "number": "39",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-40",
+            "number": "40",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-41",
+            "number": "41",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-42",
+            "number": "42",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-43",
+            "number": "43",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-44",
+            "number": "44",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-45",
+            "number": "45",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-46",
+            "number": "46",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-47",
+            "number": "47",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-48",
+            "number": "48",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-49",
+            "number": "49",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-50",
+            "number": "50",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-51",
+            "number": "51",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-52",
+            "number": "52",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-53",
+            "number": "53",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-54",
+            "number": "54",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-55",
+            "number": "55",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-56",
+            "number": "56",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-57",
+            "number": "57",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-58",
+            "number": "58",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-59",
+            "number": "59",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-60",
+            "number": "60",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-61",
+            "number": "61",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-62",
+            "number": "62",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-63",
+            "number": "63",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-64",
+            "number": "64",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-65",
+            "number": "65",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-66",
+            "number": "66",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-67",
+            "number": "67",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-68",
+            "number": "68",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-69",
+            "number": "69",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-70",
+            "number": "70",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-71",
+            "number": "71",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-72",
+            "number": "72",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-73",
+            "number": "73",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-74",
+            "number": "74",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-75",
+            "number": "75",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-76",
+            "number": "76",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-77",
+            "number": "77",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-78",
+            "number": "78",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-79",
+            "number": "79",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-80",
+            "number": "80",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-81",
+            "number": "81",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-82",
+            "number": "82",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-83",
+            "number": "83",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-84",
+            "number": "84",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-85",
+            "number": "85",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-86",
+            "number": "86",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-87",
+            "number": "87",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-88",
+            "number": "88",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-89",
+            "number": "89",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-90",
+            "number": "90",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-91",
+            "number": "91",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-92",
+            "number": "92",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-93",
+            "number": "93",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-94",
+            "number": "94",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-95",
+            "number": "95",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-96",
+            "number": "96",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-97",
+            "number": "97",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-98",
+            "number": "98",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-99",
+            "number": "99",
+            "status": "vacant",
+            "bookedBy": ""
+        },
+        {
+            "id": "TICKET_AA7K5G-seat-100",
+            "number": "100",
+            "status": "vacant",
+            "bookedBy": ""
+        }
+    ],
+    "serviceProvider": "provider_4eeb3d",
+    "transportMode": "air",
+    "status": "Available",
+    "createdAt": "2025-04-24T10:01:04Z",
+    "updatedAt": "2025-04-25T04:44:17Z",
+    "provider": {
+        "id": "provider_4eeb3d",
+        "name": "Test ProviderNew",
+        "rating": 0,
+        "transportMode": "air"
+    }
+}
+
+#######################################
+20 Get Available Seats
+
+GET http://localhost:4000/api/tickets/TICKET_AA7K5G/seats
+
+Body: Null
+
+REsponse
+
+[
+    {
+        "id": "TICKET_AA7K5G-seat-3",
+        "number": "3",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-4",
+        "number": "4",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-5",
+        "number": "5",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-6",
+        "number": "6",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-7",
+        "number": "7",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-8",
+        "number": "8",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-9",
+        "number": "9",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-10",
+        "number": "10",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-11",
+        "number": "11",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-12",
+        "number": "12",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-13",
+        "number": "13",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-14",
+        "number": "14",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-15",
+        "number": "15",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-16",
+        "number": "16",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-17",
+        "number": "17",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-18",
+        "number": "18",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-19",
+        "number": "19",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-20",
+        "number": "20",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-21",
+        "number": "21",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-22",
+        "number": "22",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-23",
+        "number": "23",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-24",
+        "number": "24",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-25",
+        "number": "25",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-26",
+        "number": "26",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-27",
+        "number": "27",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-28",
+        "number": "28",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-29",
+        "number": "29",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-30",
+        "number": "30",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-31",
+        "number": "31",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-32",
+        "number": "32",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-33",
+        "number": "33",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-34",
+        "number": "34",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-35",
+        "number": "35",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-36",
+        "number": "36",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-37",
+        "number": "37",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-38",
+        "number": "38",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-39",
+        "number": "39",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-40",
+        "number": "40",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-41",
+        "number": "41",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-42",
+        "number": "42",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-43",
+        "number": "43",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-44",
+        "number": "44",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-45",
+        "number": "45",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-46",
+        "number": "46",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-47",
+        "number": "47",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-48",
+        "number": "48",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-49",
+        "number": "49",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-50",
+        "number": "50",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-51",
+        "number": "51",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-52",
+        "number": "52",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-53",
+        "number": "53",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-54",
+        "number": "54",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-55",
+        "number": "55",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-56",
+        "number": "56",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-57",
+        "number": "57",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-58",
+        "number": "58",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-59",
+        "number": "59",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-60",
+        "number": "60",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-61",
+        "number": "61",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-62",
+        "number": "62",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-63",
+        "number": "63",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-64",
+        "number": "64",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-65",
+        "number": "65",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-66",
+        "number": "66",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-67",
+        "number": "67",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-68",
+        "number": "68",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-69",
+        "number": "69",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-70",
+        "number": "70",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-71",
+        "number": "71",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-72",
+        "number": "72",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-73",
+        "number": "73",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-74",
+        "number": "74",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-75",
+        "number": "75",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-76",
+        "number": "76",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-77",
+        "number": "77",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-78",
+        "number": "78",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-79",
+        "number": "79",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-80",
+        "number": "80",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-81",
+        "number": "81",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-82",
+        "number": "82",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-83",
+        "number": "83",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-84",
+        "number": "84",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-85",
+        "number": "85",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-86",
+        "number": "86",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-87",
+        "number": "87",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-88",
+        "number": "88",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-89",
+        "number": "89",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-90",
+        "number": "90",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-91",
+        "number": "91",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-92",
+        "number": "92",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-93",
+        "number": "93",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-94",
+        "number": "94",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-95",
+        "number": "95",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-96",
+        "number": "96",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-97",
+        "number": "97",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-98",
+        "number": "98",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-99",
+        "number": "99",
+        "status": "vacant",
+        "bookedBy": ""
+    },
+    {
+        "id": "TICKET_AA7K5G-seat-100",
+        "number": "100",
+        "status": "vacant",
+        "bookedBy": ""
+    }
+]
+########################################
+21. Get Tickets By Provider ID
+
+GET http://localhost:4000/api/tickets/provider/provider_4eeb3d
+
+Body: Null
+
+Response:
+[
+    {
+        "_id": "680a0be2bea5ba9149c4f892",
+        "id": "TICKET_AA7K5G",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-24T10:01:06.188Z",
+        "updatedAt": "2025-04-24T10:01:06.188Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    },
+    {
+        "_id": "680afefca083d3f55dc1dbe5",
+        "id": "TICKET_LAWNM9",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "availableSeats": 100,
+        "totalSeats": 100,
+        "status": "Available",
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "createdAt": "2025-04-25T03:18:20.535Z",
+        "updatedAt": "2025-04-25T03:18:20.535Z",
+        "__v": 0,
+        "dynamicPrice": 3000
+    }
+]
+
+###################################################################
+22. Updating rating of provider
+
+PUT http://localhost:4000/api/providers/rating/update
+
+Body
+{
+  "providerId": "provider_8ea1e1",
+  "rating": 4.7
+}
+
+Headers:
+
+    Content-Type: application/json
+
+    Authorization: Bearer <your JWT>
+    
+ Response:
+ 
+ {
+    "message": "Provider rating updated successfully",
+    "providerId": "provider_8ea1e1",
+    "rating": 4.7
+}
+
+#######################################################################
+
+Testing ##Creating more ticket
+
+{
+  "origin": "Delhi",
+  "destination": "Pune",
+  "departureTime": "2025-04-26T09:00:00Z",
+  "arrivalTime": "2025-04-26T12:00:00Z",
+  "price": 4000,
+  "availableSeats": 25,
+  "totalSeats": 25,
+  "status": "Available",
+  "serviceProvider": "provider_8ea1e1",
+  "transportMode": "air"
+}
+
+{
+    "message": "✅ Ticket created successfully.",
+    "ticketId": "TICKET_PWVOFO"
+}
+
+
+################################################################################################################
+23. Query TicketByRating
+
+GET http://localhost:4000/api/tickets?minRating=4.0
+
+Header
+
+Content-Type: application/json
+
+Authorization: Bearer <provider JWT>
+
+Response
+
+[
+    {
+        "_id": "680b991b6b4c0cec6a27f5a1",
+        "id": "TICKET_PWVOFO",
+        "origin": "Delhi",
+        "destination": "Pune",
+        "departureTime": "2025-04-26T09:00:00Z",
+        "arrivalTime": "2025-04-26T12:00:00Z",
+        "price": 4000,
+        "availableSeats": 25,
+        "totalSeats": 25,
+        "status": "Available",
+        "serviceProvider": "provider_8ea1e1",
+        "transportMode": "air",
+        "createdAt": "2025-04-25T14:15:55.752Z",
+        "updatedAt": "2025-04-25T14:15:55.752Z",
+        "__v": 0,
+        "provider": {
+            "id": "provider_8ea1e1",
+            "name": "Vijay Airlines",
+            "rating": 4.7,
+            "transportMode": "air"
+        }
+    }
+]
+
+####################################################################################################################
+
+24. Update Customer Details
+
+PUT  http://localhost:4000/api/customers/visibility
+
+Authorization: Bearer <your customer token>
+Content-Type: application/json
+
+Body:
+
+{
+  "visibility": "anonymous"
+}
+
+Response:
+{
+    "message": "Visibility updated successfully",
+    "visibility": "anonymous"
+}
+
+
+$$$$  Creating new customer for testing    $$$$$$
+
+{
+  "name": "Bhappi Lahiri",
+  "email": "bhappi@example.com",
+  "phone": "9800543210",
+  "password": "bhappi@123",
+  "visibility": "public"
+}
+
+{
+    "message": "Customer registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyXzJkMGE1OCIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCaGFwcGkgTGFoaXJpIiwiZW1haWwiOiJiaGFwcGlAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1OTg5MjAsImV4cCI6MTc0ODE5MDkyMH0.7avxSmSRmk5QDftCztvLJkCILgS7ifgiifXGkOvm1_Q",
+    "user": {
+        "id": "customer_2d0a58",
+        "name": "Bhappi Lahiri",
+        "email": "bhappi@example.com",
+        "phone": "9800543210",
+        "visibility": "public",
+        "role": "customer"
+    }
+}
+
+
+{
+    "success": true,
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c3RvbWVyXzJkMGE1OCIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCaGFwcGkgTGFoaXJpIiwiZW1haWwiOiJiaGFwcGlAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDU1OTkwMzksImV4cCI6MTc0ODE5MTAzOX0.btpbgE9ayyU8Wgj9zxojVSMHfWuRvDrcqSDBK6bH8qs",
+    "user": {
+        "id": "customer_2d0a58",
+        "name": "Bhappi Lahiri",
+        "email": "bhappi@example.com",
+        "phone": "9800543210",
+        "visibility": "public",
+        "registeredDate": "2025-04-25T16:35:18Z",
+        "isActive": true,
+        "bookingHistory": [],
+        "role": "customer"
+    }
+}
+
+
+
+##################################################################################################################
+
+25. Get Customer Profile
+
+GET http://localhost:4000/api/customers/profile
+
+Key 			| Value
+Authorization		| Bearer <your_customer_token>
+Content-Type 		| application/json
+    
+Body: Null
+
+Response:
+{
+    "id": "customer_2d0a58",
+    "name": "Bhappi Lahiri",
+    "email": "bhappi@example.com",
+    "phone": "9800543210",
+    "visibility": "anonymous",
+    "registeredDate": "2025-04-25T16:35:18Z",
+    "isActive": true,
+    "bookings": [],
+    "virtualWallet": {
+        "balance": 1000,
+        "transactions": []
+    }
+}
+
+###################################################
+26. Get Provider Profile
+
+
+GET http://localhost:4000/api/providers/profile
+
+
+Key 			| Value
+Authorization		| Bearer <your_provider_token>
+Content-Type 		| application/json
+
+
+{
+    "id": "provider_4eeb3d",
+    "name": "Test ProviderNew",
+    "email": "providernew@example.com",
+    "phone": "9876543210",
+    "transportMode": "air",
+    "rating": 0,
+    "totalRatings": 0,
+    "registeredDate": "2025-04-24T09:49:37Z",
+    "isActive": true,
+    "transportList": [
+        "TICKET_AA7K5G",
+        "TICKET_LAWNM9"
+    ]
+}
+
+##########################################################
+
+27. Dynamic Price of ticket updated
+
+PUT http://localhost:4000/api/providers/tickets/TICKET_AA7K5G/price
+
+Headers:
+
+Authorization :	Bearer <provider_JWT_token>
+Content	      : application/json
+
+Body: Null
+
+Response:
+
+{
+    "message": "Ticket price updated successfully",
+    "oldPrice": 3000,
+    "newPrice": 3030,
+    "ticket": {
+        "id": "TICKET_AA7K5G",
+        "origin": "Delhi",
+        "destination": "Mumbai",
+        "departureTime": "2025-05-15T08:00:00Z",
+        "arrivalTime": "2025-05-15T10:30:00Z",
+        "price": 3000,
+        "dynamicPrice": 3030,
+        "availableSeats": 98,
+        "totalSeats": 100,
+        "seats": [
+            {
+                "id": "TICKET_AA7K5G-seat-1",
+                "number": "1",
+                "status": "booked",
+                "bookedBy": "customer_cda3f7"
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-2",
+                "number": "2",
+                "status": "booked",
+                "bookedBy": "customer_cda3f7"
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-3",
+                "number": "3",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-4",
+                "number": "4",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-5",
+                "number": "5",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-6",
+                "number": "6",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-7",
+                "number": "7",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-8",
+                "number": "8",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-9",
+                "number": "9",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-10",
+                "number": "10",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-11",
+                "number": "11",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-12",
+                "number": "12",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-13",
+                "number": "13",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-14",
+                "number": "14",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-15",
+                "number": "15",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-16",
+                "number": "16",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-17",
+                "number": "17",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-18",
+                "number": "18",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-19",
+                "number": "19",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-20",
+                "number": "20",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-21",
+                "number": "21",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-22",
+                "number": "22",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-23",
+                "number": "23",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-24",
+                "number": "24",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-25",
+                "number": "25",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-26",
+                "number": "26",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-27",
+                "number": "27",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-28",
+                "number": "28",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-29",
+                "number": "29",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-30",
+                "number": "30",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-31",
+                "number": "31",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-32",
+                "number": "32",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-33",
+                "number": "33",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-34",
+                "number": "34",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-35",
+                "number": "35",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-36",
+                "number": "36",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-37",
+                "number": "37",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-38",
+                "number": "38",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-39",
+                "number": "39",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-40",
+                "number": "40",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-41",
+                "number": "41",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-42",
+                "number": "42",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-43",
+                "number": "43",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-44",
+                "number": "44",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-45",
+                "number": "45",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-46",
+                "number": "46",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-47",
+                "number": "47",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-48",
+                "number": "48",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-49",
+                "number": "49",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-50",
+                "number": "50",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-51",
+                "number": "51",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-52",
+                "number": "52",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-53",
+                "number": "53",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-54",
+                "number": "54",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-55",
+                "number": "55",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-56",
+                "number": "56",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-57",
+                "number": "57",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-58",
+                "number": "58",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-59",
+                "number": "59",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-60",
+                "number": "60",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-61",
+                "number": "61",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-62",
+                "number": "62",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-63",
+                "number": "63",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-64",
+                "number": "64",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-65",
+                "number": "65",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-66",
+                "number": "66",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-67",
+                "number": "67",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-68",
+                "number": "68",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-69",
+                "number": "69",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-70",
+                "number": "70",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-71",
+                "number": "71",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-72",
+                "number": "72",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-73",
+                "number": "73",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-74",
+                "number": "74",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-75",
+                "number": "75",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-76",
+                "number": "76",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-77",
+                "number": "77",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-78",
+                "number": "78",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-79",
+                "number": "79",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-80",
+                "number": "80",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-81",
+                "number": "81",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-82",
+                "number": "82",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-83",
+                "number": "83",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-84",
+                "number": "84",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-85",
+                "number": "85",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-86",
+                "number": "86",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-87",
+                "number": "87",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-88",
+                "number": "88",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-89",
+                "number": "89",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-90",
+                "number": "90",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-91",
+                "number": "91",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-92",
+                "number": "92",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-93",
+                "number": "93",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-94",
+                "number": "94",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-95",
+                "number": "95",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-96",
+                "number": "96",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-97",
+                "number": "97",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-98",
+                "number": "98",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-99",
+                "number": "99",
+                "status": "vacant",
+                "bookedBy": ""
+            },
+            {
+                "id": "TICKET_AA7K5G-seat-100",
+                "number": "100",
+                "status": "vacant",
+                "bookedBy": ""
+            }
+        ],
+        "serviceProvider": "provider_4eeb3d",
+        "transportMode": "air",
+        "status": "Available",
+        "createdAt": "2025-04-24T10:01:04Z",
+        "updatedAt": "2025-04-26T11:35:04Z"
+    }
+}	
+
+
+
+
+
+
+

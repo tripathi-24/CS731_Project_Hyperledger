@@ -1,4 +1,4 @@
-# CS731_Project_Hyperledger
+# CS731_Project_MyTravel.com
 This project is based on online booking system for Air, Rail and Road travel using Blockchain technology.
 The project will be implemented in following manner:
 
